@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Techsters Spotlight</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .bg-purple {
+      background-color: #5e005b !important;
+      color: #fff !important;
+    }
+
+    .bg-darkpurple {
+      background-color: #5e005b !important;
+      color: #fff !important;
+      }
+
+      .text-purple {
+        color: #5e005b  !important;
+      }
+
+    
+  </style>
+</head>
+
+<body class="bg-darkpurple">
+  <!-- Navbar -->
+  <nav class="navbar navbar-light bg-darkpurple">
+    <div class="container d-flex justify-content-left align-items-left">
+      <a class="navbar-brand" href="#">
+        <img src="images/Capture.PNG" alt="logo" style="max-width:200px;">
+      </a>
+      
+      <!-- nav menu -->
+      <nav class="navbar navbar-expand-lg navbar-dark bg-darkpurple">
+  <div class="container-fluid text-light">
+   
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="signup.html">SignUp</a>
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="#">Pricing</a>
+        </li> -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+           Learning Track
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="#projectmgtSection">Project Management</a></li>
+            <li><a class="dropdown-item" href="#uiuxSection">Product Design</a></li>
+            <li><a class="dropdown-item" href="#cyberSection">Cybersecurity</a></li>
+             <li><a class="dropdown-item" href="#datasciSection">Data Science and Engineering</a></li>
+              <li><a class="dropdown-item" href="#frontSection">Front-end Development</a></li>
+               <li><a class="dropdown-item" href="#backSection">Back-end Development</a></li>
+                <li><a class="dropdown-item" href="#devopsSection">DevOps</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+       <form id="searchForm" class="d-flex">
+        <input id="searchInput" class="form-control me-2" type="search" placeholder="Name or Country" aria-label="Search">
+
+      <!-- <input class="form-control me-2" type="search" placeholder="Name or Country" aria-label="Search"> -->
+      <button class="btn btn-outline-light" type="submit">Search</button>
+    </form>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <div class="container-fluid mt-3 mx-0 bg-light p-3">
+    <h1 class=" mx-0 text-purple text-center">MEET THE TECH GIRLS SQUAD '26</h1>
+    <p class="mb-1 mx-0 text-purple text-center">Let's Connect</p>
+  </div>
+
+ <div class="container mt-3 mx-2">
+  <div class="mb-5">
+    <h3>Project Management</h3>
+    <div class="row" id="projectmgtSection"></div>
+  </div>
+
+  <div class="mb-5">
+    <h3>Data Science and Engineering</h3>
+    <div class="row" id="datasciSection"></div>
+  </div>
+
+  <div class="mb-5">
+    <h3>Product Design</h3>
+    <div class="row" id="uiuxSection"></div>
+  </div>
+
+  <div class="mb-5">
+    <h3>Cybersecurity</h3>
+    <div class="row" id="cyberSection"></div>
+  </div>
+
+  <div class="mb-5">
+    <h3>Front-end Development</h3>
+    <div class="row" id="frontSection"></div>
+  </div>
+
+  <div class="mb-5">
+    <h3>Back-end Development</h3>
+    <div class="row" id="backSection"></div>
+  </div>
+
+  <div class="mb-5">
+    <h3>DevOps</h3>
+    <div class="row" id="devopsSection"></div>
+  </div>
+
+</div>
+  <!-- Edit Modal -->
+  <div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="editForm">
+          <div class="modal-header">
+            <h5 class="modal-title">Edit Profile</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="editIndex">
+            <div class="mb-3">
+              <label class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="editName" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Country</label>
+              <input type="text" class="form-control" id="editCountry" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Learning Track</label>
+              <select id="editTrack" class="form-select" required>
+                <option>Project Management</option>
+                <option>Data Science and Engineering</option>
+                <option>Product Design</option>
+                <option>Cybersecurity</option>
+                <option>Front-end Development</option>
+                <option>Back-end Development</option>
+                <option>DevOps</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">LinkedIn</label>
+              <input type="url" class="form-control" id="editLinkedin" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+    <!-- Footer -->
+<footer class="bg-light text-purple mt-5">
+  <div class="container py-4 text-center">
+    <!-- Social icons -->
+    <div class="mb-3">
+     
+      <a href="https://www.linkedin.com/in/zion-naluwooza-8b819421b/" target="blank" class="text-purple mx-2 fs-4">
+        <i class="bi bi-linkedin"></i>
+      </a>
+      <a href="mailto:naluwoozazion@gmail.com" target="_blank" class="text-purple mx-2 fs-4">
+        <i class="bi bi-envelope-fill"></i>
+      </a>
+      <a href="https://www.instagram.com/xhion_256/" target="_blank" class="text-purple mx-2 fs-4">
+        <i class="bi bi-instagram"></i>
+      </a>
+    </div>
+
+    <!-- Copyright -->
+    <div>
+      &copy; 2025 WTFC26 Wall Of Fame. All Rights Reserved.
+    </div>
+  </div>
+</footer>
+
+<!-- Bootstrap Icons CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+
+  <script>
+    // 🔹 Get current user & admin status from localStorage
+    const currentUser = localStorage.getItem("currentUser");
+    const isAdmin = localStorage.getItem("isAdmin") === "true";
+
+    function displayFellows() {
+      let fellows = JSON.parse(localStorage.getItem("fellows")) || [];
+      const searchTerm = document.getElementById("searchInput")?.value.toLowerCase() || "";
+
+      // Clear all sections
+      ["projectmgtSection", "datasciSection", "uiuxSection", "cyberSection", "frontSection", "backSection", "devopsSection"]
+        .forEach(id => document.getElementById(id).innerHTML = "");
+
+        // Prevent page reload on form submit
+document.getElementById("searchForm").addEventListener("submit", function(e) {
+  e.preventDefault(); // stop form from reloading the page
+  displayFellows();   // call your function to filter results
+});
+
+      fellows.forEach((fellow, index) => {
+        // 🔹 Search filter
+        if (searchTerm &&
+          !fellow.name.toLowerCase().includes(searchTerm) &&
+          !fellow.country.toLowerCase().includes(searchTerm) &&
+          !fellow.track.toLowerCase().includes(searchTerm)) {
+          return;
+        }
+
+        // 🔹 Menu (edit/delete)
+        let menu = "";
+        if (fellow.username === currentUser || isAdmin) {
+          menu = `
+            <div class="dropdown position-absolute top-0 end-0 m-2">
+              <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown">⋮</button>
+              <ul class="dropdown-menu">
+                ${fellow.username === currentUser
+              ? `<li><a class="dropdown-item" href="#" onclick="editFellow(${index})">Edit</a></li>` : ""}
+                ${isAdmin
+              ? `<li><a class="dropdown-item text-danger" href="#" onclick="deleteFellow(${index})">Delete</a></li>` : ""}
+              </ul>
+            </div>`;
+        }
+
+        const card = `
+          <div class="col-md-3 mb-4 position-relative">
+            <a href="${fellow.linkedin}" target="_blank" class="text-decoration-none text-dark">
+              <div class="card shadow-sm h-100 text-center">
+                ${menu}
+                <div class="p-2">
+                  <img src="${fellow.image}" class="rounded-circle mx-auto d-block" style="width:150px;height:150px;object-fit:cover;">
+                </div>
+                <div class="card-body p-2">
+                  <h5 class="card-title">${fellow.name}</h5>
+                  <p class="card-text">${fellow.country}</p>
+                 
+                </div>
+              </div>
+            </a>
+          </div>`;
+
+        // 🔹 Append to correct section
+        switch (fellow.track) {
+          case "Project Management": document.getElementById("projectmgtSection").innerHTML += card; break;
+          case "Data Science and Engineering": document.getElementById("datasciSection").innerHTML += card; break;
+          case "Product Design": document.getElementById("uiuxSection").innerHTML += card; break;
+          case "Cybersecurity": document.getElementById("cyberSection").innerHTML += card; break;
+          case "Front-end Development": document.getElementById("frontSection").innerHTML += card; break;
+          case "Back-end Development": document.getElementById("backSection").innerHTML += card; break;
+          case "DevOps": document.getElementById("devopsSection").innerHTML += card; break;
+        }
+      });
+    }
+
+    // 🔹 Edit profile
+    function editFellow(index) {
+      let fellows = JSON.parse(localStorage.getItem("fellows")) || [];
+      const fellow = fellows[index];
+
+      document.getElementById("editIndex").value = index;
+      document.getElementById("editName").value = fellow.name;
+      document.getElementById("editCountry").value = fellow.country;
+      document.getElementById("editTrack").value = fellow.track;
+      document.getElementById("editLinkedin").value = fellow.linkedin;
+
+      new bootstrap.Modal(document.getElementById("editModal")).show();
+    }
+
+    document.getElementById("editForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      let fellows = JSON.parse(localStorage.getItem("fellows")) || [];
+      const index = document.getElementById("editIndex").value;
+
+      fellows[index].name = document.getElementById("editName").value.trim();
+      fellows[index].country = document.getElementById("editCountry").value.trim();
+      fellows[index].track = document.getElementById("editTrack").value;
+      fellows[index].linkedin = document.getElementById("editLinkedin").value.trim();
+
+      localStorage.setItem("fellows", JSON.stringify(fellows));
+      bootstrap.Modal.getInstance(document.getElementById("editModal")).hide();
+      displayFellows();
+    });
+
+    // 🔹 Delete profile (admin only)
+    function deleteFellow(index) {
+      if (!isAdmin) return alert("Only admin can delete profiles!");
+      if (!confirm("Are you sure you want to delete this profile?")) return;
+
+      let fellows = JSON.parse(localStorage.getItem("fellows")) || [];
+      fellows.splice(index, 1);
+      localStorage.setItem("fellows", JSON.stringify(fellows));
+      displayFellows();
+    }
+
+    // 🔹 Search input
+    document.getElementById("searchInput").addEventListener("input", displayFellows);
+
+    // Display all on page load
+    displayFellows();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
