@@ -19,15 +19,16 @@
 
     .text-purple {
       color: #5e005b !important;
-}
-      footer a {
-        text-decoration: none;
-        /* removes underline */
-      }
+    }
 
-      footer a:hover {
-        color: #ccc;
-      }
+    footer a {
+      text-decoration: none;
+      /* removes underline */
+    }
+
+    footer a:hover {
+      color: #ccc;
+    }
   </style>
 </head>
 
@@ -174,6 +175,7 @@
     </div>
   </div>
 
+
   <!-- Footer -->
   <footer class="bg-light text-purple mt-5">
     <div class="container py-4 text-center">
@@ -202,7 +204,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
 
-  <!-- <script>
+  <script>
     // 🔹 Get current user & admin status from localStorage
     const currentUser = localStorage.getItem("currentUser");
     const isAdmin = localStorage.getItem("isAdmin") === "true";
@@ -230,23 +232,51 @@
           return;
         }
 
+        // Get current user
+        const currentUser = localStorage.getItem("currentUser");
+        let isAdmin = false;
+
+        // Define admin username
+        if (currentUser === "zion") {
+          isAdmin = true;
+        }
+
+        //         // 🔹 Menu (edit/delete)
+        //         let menu = "";
+        //         if (fellow.username === currentUser || isAdmin) {
+        //           menu = `
+        //            <div class="dropdown position-absolute top-0 end-0 m-2">
+        //   <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">⋮</button>
+        //   <ul class="dropdown-menu">
+        //     ${fellow.username === currentUser
+        //       ? `<li><a class="dropdown-item" href="#" onclick="editFellow(${index})">Edit</a></li>` : ""}
+        //     ${isAdmin
+        //       ? `<li><a class="dropdown-item text-danger" href="#" onclick="deleteFellow(${index})">Delete</a></li>` : ""}
+        //   </ul>
+        // </div> `;
+
+        //         }
+
         // 🔹 Menu (edit/delete)
         let menu = "";
         if (fellow.username === currentUser || isAdmin) {
           menu = `
-            <div class="dropdown position-absolute top-0 end-0 m-2">
-              <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown">⋮</button>
-              <ul class="dropdown-menu">
-                ${fellow.username === currentUser
-              ? `<li><a class="dropdown-item" href="#" onclick="editFellow(${index})">Edit</a></li>` : ""}
-                ${isAdmin
-              ? `<li><a class="dropdown-item text-danger" href="#" onclick="deleteFellow(${index})">Delete</a></li>` : ""}
-              </ul>
-            </div>`;
+    <div class="dropdown position-absolute top-0 end-0 m-2">
+      <button class="btn btn-sm btn-light p-1" type="button" id="dropdownMenuButton${index}" data-bs-toggle="dropdown" aria-expanded="false" style="font-weight:bold;">
+        ⋮
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton${index}">
+        ${fellow.username === currentUser ? `<li><a class="dropdown-item" href="#" onclick="editFellow(${index})">Edit</a></li>` : ""}
+        ${isAdmin ? `<li><a class="dropdown-item text-danger" href="#" onclick="deleteFellow(${index})">Delete</a></li>` : ""}
+      </ul>
+    </div>`;
         }
 
+
+
+
         const card = `
-          <div class="col-md-3 mb-4 position-relative">
+          <div class="col-6 col-md-2 mb-3 position-relative">
             <a href="${fellow.linkedin}" target="_blank" class="text-decoration-none text-dark">
               <div class="card shadow-sm h-100 text-center">
                 ${menu}
@@ -320,210 +350,12 @@
 
     // Display all on page load
     displayFellows();
-  </script> -->
+  </script>
 
-  <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
-  import { getFirestore, collection, getDocs, doc, getDoc, updateDoc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
-  // ---- Your Firebase config (same as signup.html) ----
-  const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID",
-  };
 
-  // ---- Init ----
-  const app  = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db   = getFirestore(app);
 
-  let CURRENT_USER = null;
-  let IS_ADMIN = false;
-  let ALL_FELLOWS = [];
 
-  // DOM
-  const searchInput = document.getElementById("searchInput");
-  const searchForm  = document.getElementById("searchForm");
-
-  // Avoid duplicate handler (your old code added this inside displayFellows)
-  searchForm?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    renderFellows();
-  });
-  searchInput?.addEventListener("input", renderFellows);
-
-  // Auth state → know who is logged in
-  onAuthStateChanged(auth, async (user) => {
-    CURRENT_USER = user || null;
-    IS_ADMIN = false;
-
-    if (CURRENT_USER) {
-      // check if current user is admin by testing admins/{uid} exists
-      const adminDoc = await getDoc(doc(db, "admins", CURRENT_USER.uid));
-      IS_ADMIN = adminDoc.exists();
-    }
-
-    await loadFellows();
-    renderFellows();
-  });
-
-  // Load all fellows once at start (you can add live updates later with onSnapshot)
-  async function loadFellows() {
-    const q = query(collection(db, "fellows"), orderBy("createdAt", "desc"));
-    const snap = await getDocs(q);
-    ALL_FELLOWS = snap.docs.map(d => d.data());
-  }
-async function loadFellows() {
-  const snapshot = await db.collection("fellows").orderBy("createdAt", "desc").get();
-  const container = document.getElementById("fellowsList");
-  container.innerHTML = "";
-
-  snapshot.forEach(doc => {
-    const fellow = doc.data();
-    container.innerHTML += `
-      <div class="col-md-4 mb-4">
-        <div class="card shadow p-3 text-center">
-          <img src="${fellow.image}" class="card-img-top rounded-circle mb-2" style="height:150px; width:150px; object-fit:cover; margin:auto;">
-          <h5>${fellow.name}</h5>
-          <p>${fellow.track} • ${fellow.country}</p>
-          <a href="${fellow.linkedin}" target="_blank">LinkedIn</a>
-        </div>
-      </div>
-    `;
-  });
-}
-
-loadFellows();
-  function renderFellows() {
-    const term = (searchInput?.value || "").toLowerCase().trim();
-
-    // Clear sections
-    ["projectmgtSection","datasciSection","uiuxSection","cyberSection","frontSection","backSection","devopsSection"]
-      .forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = ""; });
-
-    // Filter
-    const list = ALL_FELLOWS.filter(f =>
-      !term ||
-      f.name?.toLowerCase().includes(term) ||
-      f.country?.toLowerCase().includes(term) ||
-      f.track?.toLowerCase().includes(term)
-    );
-
-    // Render
-    for (const fellow of list) {
-      const canEdit   = CURRENT_USER && fellow.uid === CURRENT_USER.uid;
-      const canDelete = IS_ADMIN;
-
-      const menu = (canEdit || canDelete) ? `
-        <div class="dropdown position-absolute top-0 end-0 m-2">
-          <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown">⋮</button>
-          <ul class="dropdown-menu">
-            ${canEdit ? `<li><a class="dropdown-item" href="#" data-action="edit" data-uid="${fellow.uid}">Edit</a></li>` : ""}
-            ${canDelete ? `<li><a class="dropdown-item text-danger" href="#" data-action="delete" data-uid="${fellow.uid}">Delete</a></li>` : ""}
-          </ul>
-        </div>` : "";
-
-      const card = `
-        <div class="col-md-3 mb-4 position-relative">
-          <a href="${fellow.linkedin || '#'}" target="_blank" class="text-decoration-none text-dark">
-            <div class="card shadow-sm h-100 text-center">
-              ${menu}
-              <div class="p-2">
-                <img src="${fellow.photoURL || 'https://via.placeholder.com/150'}" class="rounded-circle mx-auto d-block" style="width:150px;height:150px;object-fit:cover;">
-              </div>
-              <div class="card-body p-2">
-                <h5 class="card-title">${fellow.name || ''}</h5>
-                <p class="card-text">${fellow.country || ''}</p>
-              </div>
-            </div>
-          </a>
-        </div>`;
-
-      const targetId = trackToSectionId(fellow.track);
-      const target = document.getElementById(targetId);
-      if (target) target.insertAdjacentHTML("beforeend", card);
-    }
-
-    // Wire edit/delete clicks (event delegation)
-    document.querySelectorAll('.dropdown-menu a[data-action]').forEach(a => {
-      a.addEventListener('click', onMenuClick);
-    });
-  }
-
-  function trackToSectionId(track) {
-    switch (track) {
-      case "Project Management": return "projectmgtSection";
-      case "Data Science and Engineering": return "datasciSection";
-      case "Product Design": return "uiuxSection";
-      case "Cybersecurity": return "cyberSection";
-      case "Front-end Development": return "frontSection";
-      case "Back-end Development": return "backSection";
-      case "DevOps": return "devopsSection";
-      default: return "frontSection";
-    }
-  }
-
-  // Handle edit/delete clicks
-  async function onMenuClick(e) {
-    e.preventDefault();
-    const action = e.currentTarget.getAttribute('data-action');
-    const uid    = e.currentTarget.getAttribute('data-uid');
-
-    if (action === 'delete') {
-      if (!confirm("Delete this profile?")) return;
-      try {
-        await deleteDoc(doc(db, "fellows", uid));
-        await loadFellows();
-        renderFellows();
-      } catch (err) {
-        console.error(err);
-        alert("Delete failed: " + err.message);
-      }
-    }
-
-    if (action === 'edit') {
-      // Open your Bootstrap modal and prefill (you already have edit modal)
-      // Fill inputs from ALL_FELLOWS
-      const fellow = ALL_FELLOWS.find(f => f.uid === uid);
-      if (!fellow) return;
-
-      document.getElementById("editIndex").value = uid; // reuse this as uid
-      document.getElementById("editName").value = fellow.name || "";
-      document.getElementById("editCountry").value = fellow.country || "";
-      document.getElementById("editTrack").value = fellow.track || "";
-      document.getElementById("editLinkedin").value = fellow.linkedin || "";
-
-      new bootstrap.Modal(document.getElementById("editModal")).show();
-    }
-  }
-
-  // Save edits
-  document.getElementById("editForm")?.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const uid      = document.getElementById("editIndex").value;
-    const name     = document.getElementById("editName").value.trim();
-    const country  = document.getElementById("editCountry").value.trim();
-    const track    = document.getElementById("editTrack").value;
-    const linkedin = document.getElementById("editLinkedin").value.trim();
-
-    try {
-      await updateDoc(doc(db, "fellows", uid), {
-        name, country, track, linkedin, updatedAt: new Date()
-      });
-      bootstrap.Modal.getInstance(document.getElementById("editModal")).hide();
-      await loadFellows();
-      renderFellows();
-    } catch (err) {
-      console.error(err);
-      alert("Update failed: " + err.message);
-    }
-  });
-</script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
