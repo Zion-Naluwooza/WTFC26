@@ -65,7 +65,7 @@
                   Learning Track
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li><a class="dropdown-item" href="#projectmgtSection">Project Management</a></li>
+                  <li><a class="dropdown-item" href="#productmgtSection">Product Management</a></li>
                   <li><a class="dropdown-item" href="#uiuxSection">Product Design</a></li>
                   <li><a class="dropdown-item" href="#cyberSection">Cybersecurity</a></li>
                   <li><a class="dropdown-item" href="#datasciSection">Data Science and Engineering</a></li>
@@ -96,8 +96,8 @@
 
   <div class="container mt-3 mx-2">
     <div class="mb-5">
-      <h3>Project Management</h3>
-      <div class="row" id="projectmgtSection"></div>
+      <h3>Product Management</h3>
+      <div class="row" id="productmgtSection"></div>
     </div>
 
     <div class="mb-5">
@@ -108,6 +108,11 @@
     <div class="mb-5">
       <h3>Product Design</h3>
       <div class="row" id="uiuxSection"></div>
+    </div>
+
+    <div class="mb-5">
+      <h3>Mobile App Development</h3>
+      <div class="row" id="mobappSection"></div>
     </div>
 
     <div class="mb-5">
@@ -153,9 +158,10 @@
             <div class="mb-3">
               <label class="form-label">Learning Track</label>
               <select id="editTrack" class="form-select" required>
-                <option>Project Management</option>
+                <option>Product Management</option>
                 <option>Data Science and Engineering</option>
                 <option>Product Design</option>
+                <option>Mobile App Development</option>
                 <option>Cybersecurity</option>
                 <option>Front-end Development</option>
                 <option>Back-end Development</option>
@@ -205,7 +211,7 @@
 
 
   <script>
-    // 🔹 Get current user & admin status from localStorage
+    // Get current user & admin status from localStorage
     const currentUser = localStorage.getItem("currentUser");
     const isAdmin = localStorage.getItem("isAdmin") === "true";
 
@@ -213,9 +219,11 @@
       let fellows = JSON.parse(localStorage.getItem("fellows")) || [];
       const searchTerm = document.getElementById("searchInput")?.value.toLowerCase() || "";
 
-      // Clear all sections
-      ["projectmgtSection", "datasciSection", "uiuxSection", "cyberSection", "frontSection", "backSection", "devopsSection"]
-        .forEach(id => document.getElementById(id).innerHTML = "");
+      ["productmgtSection", "datasciSection", "uiuxSection", "mobappSection", "cyberSection", "frontSection", "backSection", "devopsSection"]
+  .forEach(id => {
+    const section = document.getElementById(id);
+    if (section) section.innerHTML = "";  // ✅ only clear if it exists
+  });
 
       // Prevent page reload on form submit
       document.getElementById("searchForm").addEventListener("submit", function (e) {
@@ -224,7 +232,7 @@
       });
 
       fellows.forEach((fellow, index) => {
-        // 🔹 Search filter
+        //  Search filter
         if (searchTerm &&
           !fellow.name.toLowerCase().includes(searchTerm) &&
           !fellow.country.toLowerCase().includes(searchTerm) &&
@@ -241,7 +249,7 @@
           isAdmin = true;
         }
 
-        //         // 🔹 Menu (edit/delete)
+        //         //  Menu (edit/delete)
         //         let menu = "";
         //         if (fellow.username === currentUser || isAdmin) {
         //           menu = `
@@ -257,7 +265,7 @@
 
         //         }
 
-        // 🔹 Menu (edit/delete)
+        //  Menu (edit/delete)
         let menu = "";
         if (fellow.username === currentUser || isAdmin) {
           menu = `
@@ -292,11 +300,12 @@
             </a>
           </div>`;
 
-        // 🔹 Append to correct section
+        //  Append to correct section
         switch (fellow.track) {
-          case "Project Management": document.getElementById("projectmgtSection").innerHTML += card; break;
+          case "Product Management": document.getElementById("productmgtSection").innerHTML += card; break;
           case "Data Science and Engineering": document.getElementById("datasciSection").innerHTML += card; break;
           case "Product Design": document.getElementById("uiuxSection").innerHTML += card; break;
+          case "Mobile App Development": document.getElementById("mobappSection").innerHTML += card; break;
           case "Cybersecurity": document.getElementById("cyberSection").innerHTML += card; break;
           case "Front-end Development": document.getElementById("frontSection").innerHTML += card; break;
           case "Back-end Development": document.getElementById("backSection").innerHTML += card; break;
@@ -305,7 +314,7 @@
       });
     }
 
-    // 🔹 Edit profile
+    //  Edit profile
     function editFellow(index) {
       let fellows = JSON.parse(localStorage.getItem("fellows")) || [];
       const fellow = fellows[index];
@@ -334,7 +343,7 @@
       displayFellows();
     });
 
-    // 🔹 Delete profile (admin only)
+    //  Delete profile (admin only)
     function deleteFellow(index) {
       if (!isAdmin) return alert("Only admin can delete profiles!");
       if (!confirm("Are you sure you want to delete this profile?")) return;
@@ -345,7 +354,7 @@
       displayFellows();
     }
 
-    // 🔹 Search input
+    //  Search input
     document.getElementById("searchInput").addEventListener("input", displayFellows);
 
     // Display all on page load

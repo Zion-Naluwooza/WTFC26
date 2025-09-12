@@ -83,6 +83,10 @@
         <input type="text" class="form-control" id="name" required>
       </div>
       <div class="mb-3">
+        <label for="id" class="form-label">Student ID</label>
+        <input type="text" class="form-control" id="id" required>
+      </div>
+      <div class="mb-3">
         <label for="email" class="form-label">Email</label>
         <input type="email" class="form-control" id="email" required>
       </div>
@@ -98,9 +102,10 @@
         <label for="track" class="form-label">Learning Track</label>
         <select id="track" class="form-select" required>
           <option value="">Select Track</option>
-          <option>Project Management</option>
+          <option>Product Management</option>
           <option>Data Science and Engineering</option>
           <option>Product Design</option>
+          <option>Mobile App Development </option>
           <option>Cybersecurity</option>
           <option>DevOps</option>
           <option>Back-end Development</option>
@@ -154,12 +159,13 @@
   </footer>
 
 
-  <script>
+  <!-- <script>
     document.getElementById('signupForm').addEventListener('submit', function (e) {
       e.preventDefault();
 
       const name = document.getElementById('name').value.trim();
       const country = document.getElementById('country').value.trim();
+      const id = document.getElementById('id').value.trim();
       const track = document.getElementById('track').value;
       const linkedin = document.getElementById('linkedin').value.trim();
       const imageInput = document.getElementById('image');
@@ -186,6 +192,7 @@
           country,
           track,
           linkedin,
+          studentid,
           image: imageBase64,
           username: currentUsername
         });
@@ -207,7 +214,7 @@
           localStorage.setItem("isAdmin", "false");
         }
 
-        console.log("✅ Signup complete. Redirecting...");
+        console.log(" Signup complete. Redirecting...");
 
         // Redirect after small delay (just to ensure storage finishes)
         setTimeout(() => {
@@ -217,17 +224,19 @@
 
       reader.readAsDataURL(file);
     });
-  </script>
+  </script> -->
 
-  <!-- <script>
+  <script>
 document.getElementById('signupForm').addEventListener('submit', function (e) {
   e.preventDefault();
 
   const name = document.getElementById('name').value.trim();
+  const id = document.getElementById('id').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value.trim();
   const country = document.getElementById('country').value.trim();
   const track = document.getElementById('track').value;
   const linkedin = document.getElementById('linkedin').value.trim();
-
   const imageInput = document.getElementById('image');
   const file = imageInput.files[0];
 
@@ -244,15 +253,24 @@ document.getElementById('signupForm').addEventListener('submit', function (e) {
     // Load existing fellows or create new array
     let fellows = JSON.parse(localStorage.getItem("fellows")) || [];
 
+    // Prevent duplicate emails
+    if (fellows.some(f => f.email === email)) {
+      alert("This email is already registered. Please log in instead.");
+      return;
+    }
+
     // Create a username from name (lowercase, no spaces)
     const username = name.toLowerCase().replace(/\s+/g, "");
 
     // Determine if this user is admin
-    let isAdmin = username.startsWith("zion"); // any username starting with "zion" is admin
+    let isAdmin = username.startsWith("zion");
 
     // Save user to localStorage
     fellows.push({
       name,
+      id,
+      email,
+      password, //  Plaintext, only for demo
       country,
       track,
       linkedin,
@@ -265,13 +283,48 @@ document.getElementById('signupForm').addEventListener('submit', function (e) {
     localStorage.setItem("currentUser", username);
     localStorage.setItem("isAdmin", isAdmin ? "true" : "false");
 
-    // Redirect safely to homepage
-    window.location.href = "home.html";
+    console.log(" Signup complete. Redirecting to home.html ...");
+
+    // Redirect AFTER saving user
+    setTimeout(() => {
+      window.location.href = "home.html";
+    }, 300);
   };
 
   reader.readAsDataURL(file);
 });
-</script> -->
+
+// Toggle between Signup and Login forms
+document.getElementById("showLogin").addEventListener("click", function() {
+  document.getElementById("signupForm").style.display = "none";
+  document.getElementById("loginForm").style.display = "block";
+});
+
+document.getElementById("showSignup").addEventListener("click", function() {
+  document.getElementById("loginForm").style.display = "none";
+  document.getElementById("signupForm").style.display = "block";
+});
+
+// Handle login form
+document.getElementById("loginForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value.trim();
+
+  let fellows = JSON.parse(localStorage.getItem("fellows")) || [];
+  let user = fellows.find(f => f.email === email && f.password === password);
+
+  if (!user) {
+    alert("Invalid email or password.");
+    return;
+  }
+
+  localStorage.setItem("currentUser", user.username);
+  alert("Login successful!");
+  window.location.href = "home.html";
+});
+</script>
 
 
 
